@@ -78,7 +78,7 @@ public class EnvioXML3 {
 		InputStream isCacert = new FileInputStream(caminhoCacert);
 		Certificado certificado = CertificadoService.certificadoPfx(caminhoCertificadoA1, senhaCertificadoA1);
 		certificado.setAtivarProperties(false);
-		CertificadoService.inicializaCertificado(certificado, isCacert);
+		//CertificadoService.inicializaCertificado(certificado, isCacert);
 
 		// -- assina o xml
 		String xml = arquivoParaString(caminhoXML);
