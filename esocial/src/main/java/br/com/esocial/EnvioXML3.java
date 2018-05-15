@@ -66,7 +66,7 @@ public class EnvioXML3 {
 		System.out.println("java version: " + System.getProperty("java.version"));
 
 		String caminhoXML = "/Users/Amiguinho/Development/tmp/esocial/S1000.xml";
-		String caminhoCacert = "/Users/Amiguinho/Development/tmp/esocial/Cacert-22-04-2018_2";
+		String caminhoCacert = "/Users/Amiguinho/Development/tmp/esocial/certificados/Cacert-22-04-2018_v3";
 		String caminhoCertificadoA1 = "/Users/Amiguinho/Development/tmp/esocial/mpt-cos-hom_mpt_mp_br3.p12";
 
 //		String caminhoXML = "C:/desenv/sandbox/esocial/S1000.xml";
@@ -77,8 +77,8 @@ public class EnvioXML3 {
 		// -- carrega o certificado, cacert custom e inicializa o proxy dimanico
 		InputStream isCacert = new FileInputStream(caminhoCacert);
 		Certificado certificado = CertificadoService.certificadoPfx(caminhoCertificadoA1, senhaCertificadoA1);
-		certificado.setAtivarProperties(false);
-		//CertificadoService.inicializaCertificado(certificado, isCacert);
+		certificado.setAtivarProperties(true);
+		CertificadoService.inicializaCertificado(certificado, isCacert);
 
 		// -- assina o xml
 		String xml = arquivoParaString(caminhoXML);
