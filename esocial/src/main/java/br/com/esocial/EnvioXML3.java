@@ -58,6 +58,7 @@ import org.xml.sax.SAXException;
 
 import br.com.samuelweb.certificado.Certificado;
 import br.com.samuelweb.certificado.CertificadoService;
+import br.com.samuelweb.certificado.TipoCertificadoA3;
 import br.gov.esocial.www.servicos.empregador.lote.eventos.envio.v1_1_0.ServicoEnviarLoteEventosStub;
 
 public class EnvioXML3 {
@@ -65,34 +66,38 @@ public class EnvioXML3 {
 	public static void main(String args[]) throws Exception {
 		System.out.println("java version: " + System.getProperty("java.version"));
 
-		String caminhoXML = "/Users/Amiguinho/Development/tmp/esocial/S1000.xml";
-		String caminhoCacert = "/Users/Amiguinho/Development/tmp/esocial/certificados/Cacert-22-04-2018_v3";
-		String caminhoCertificadoA1 = "/Users/Amiguinho/Development/tmp/esocial/mpt-cos-hom_mpt_mp_br3.p12";
+//		String caminhoXML = "/Users/Amiguinho/Development/tmp/esocial/S1000.xml";
+//		String caminhoCacert = "/Users/Amiguinho/Development/tmp/esocial/certificados/Cacert-22-04-2018_v3";
+//		String caminhoCertificadoA1 = "/Users/Amiguinho/Development/tmp/esocial/mpt-cos-hom_mpt_mp_br3.p12";
 
-//		String caminhoXML = "C:/desenv/sandbox/esocial/S1000.xml";
-//		String caminhoCacert = "C:/desenv/sandbox/esocial/keystore/Cacert-22-04-2018_3_certs_eSocial";
-//		String caminhoCertificadoA1 = "C:/desenv/sandbox/esocial/mpt-cos-hom_mpt_mp_br3.p12";
+		String caminhoXML = "C:/desenv/sandbox/esocial/S1000.xml";
+		String caminhoCacert = "C:/desenv/certificados/cacert/Cacert-22-04-2018";
+		String caminhoCertificadoA1 = "C:/desenv/sandbox/esocial/mpt-cos-hom_mpt_mp_br3.p12";
 		
 		String senhaCertificadoA1 = "mpt";
 
 		// -- carrega o certificado, cacert custom e inicializa o proxy dimanico
 		InputStream isCacert = new FileInputStream(caminhoCacert);
-		Certificado certificado = CertificadoService.certificadoPfx(caminhoCertificadoA1, senhaCertificadoA1);
+//		Certificado certificado = CertificadoService.certificadoPfx(caminhoCertificadoA1, senhaCertificadoA1);
+//		certificado.setAtivarProperties(false);
+//		CertificadoService.inicializaCertificado(certificado, isCacert);
+		Certificado certificado = CertificadoService.certificadoA3(TipoCertificadoA3.TOKEN_ALADDIN.getMarca(), TipoCertificadoA3.TOKEN_ALADDIN.getDll(), "Luci@no10");
 		certificado.setAtivarProperties(false);
 		CertificadoService.inicializaCertificado(certificado, isCacert);
 
+		
 		// -- assina o xml
 		String xml = arquivoParaString(caminhoXML);
 		//validar(xml, "C:\\desenv\\sandbox\\esocial\\EsquemasXSDv2.4.02\\evtInfoEmpregador.xsd");
 		String xmlAssinado = assinarXML(xml, certificado);
 		String xmlEventos = enveloparDummyEventos(xmlAssinado);
 		String xmlEnvelopado = enveloparSoap(xmlEventos);
-		xmlEnvelopado = format(xmlEnvelopado, false);
+		//xmlEnvelopado = format(xmlEnvelopado, false);
 
 		URL url = new URL(
 				"https://webservices.producaorestrita.esocial.gov.br/servicos/empregador/enviarloteeventos/WsEnviarLoteEventos.svc");
 
-		System.out.println(xmlEnvelopado);
+		System.out.println(format(xmlEnvelopado, false));
 
 		OMElement ome = AXIOMUtil.stringToOM(xmlEnvelopado);
 		ServicoEnviarLoteEventosStub.LoteEventos_type0 dadosMsgType0 = new ServicoEnviarLoteEventosStub.LoteEventos_type0();
@@ -210,7 +215,8 @@ public class EnvioXML3 {
 		sb.append("     </ideEmpregador>");
 		sb.append("     <ideTransmissor>");
 		sb.append("         <tpInsc>2</tpInsc>");
-		sb.append("         <nrInsc>12345678901</nrInsc>");
+		sb.append("         <nrInsc>10071871829</nrInsc>");
+		//sb.append("         <nrInsc>12345678901</nrInsc>");
 		sb.append("     </ideTransmissor>");
 		sb.append("     <eventos>");
 		sb.append("         <evento Id=\"ID1123456780000002018050716254600001\">");
